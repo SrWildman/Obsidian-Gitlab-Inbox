@@ -5,7 +5,6 @@ import {
   DiffSize,
   GitLabDiscussion,
   GitLabMR,
-  GitLabNote,
   GitLabTodo,
   GitLabInboxSettings,
   InboxData,
@@ -477,8 +476,7 @@ function cleanupStaleTodos(api: GitLabApi, todos: GitLabTodo[]): void {
   const stale = todos.filter((t) => t.target.state !== "opened");
   if (stale.length === 0) return;
 
-  // Fire and forget - don't block the refresh for cleanup
-  Promise.all(
+  void Promise.all(
     stale.map((t) => api.markTodoAsDone(t.id).catch(() => {}))
   );
 }

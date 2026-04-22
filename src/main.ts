@@ -31,7 +31,7 @@ export default class GitLabInboxPlugin extends Plugin {
 
     // Ribbon icon
     this.addRibbonIcon("inbox", "GitLab Inbox", () => {
-      this.activateView();
+      void this.activateView();
     });
 
     // Status bar
@@ -39,20 +39,20 @@ export default class GitLabInboxPlugin extends Plugin {
     this.statusBarEl.setText("");
     this.statusBarEl.addClass("gi-status-bar");
     this.registerDomEvent(this.statusBarEl, "click", () => {
-      this.activateView();
+      void this.activateView();
     });
 
     // Commands
     this.addCommand({
       id: "open-inbox",
-      name: "Open GitLab Inbox",
-      callback: () => this.activateView(),
+      name: "Open inbox",
+      callback: () => { void this.activateView(); },
     });
 
     this.addCommand({
       id: "refresh-inbox",
-      name: "Refresh GitLab Inbox",
-      callback: () => this.refresh(),
+      name: "Refresh inbox",
+      callback: () => { void this.refresh(); },
     });
 
     // Settings tab
@@ -62,7 +62,7 @@ export default class GitLabInboxPlugin extends Plugin {
     if (this.settings.gitlabHostname && this.settings.personalAccessToken) {
       this.startInterval();
       // Initial fetch after a short delay to let Obsidian finish loading
-      const t = window.setTimeout(() => this.refresh(), 5000);
+      const t = window.setTimeout(() => { void this.refresh(); }, 5000);
       this.register(() => window.clearTimeout(t));
     }
 
@@ -70,7 +70,7 @@ export default class GitLabInboxPlugin extends Plugin {
     this.registerEvent(
       this.app.vault.on("modify", (file) => {
         if (file.path === normalizePath(this.settings.inboxFilename)) {
-          this.handleNoteModified();
+          void this.handleNoteModified();
         }
       })
     );
@@ -96,7 +96,7 @@ export default class GitLabInboxPlugin extends Plugin {
     this.stopInterval();
     const ms = this.settings.refreshIntervalMinutes * 60 * 1000;
     this.intervalId = this.registerInterval(
-      window.setInterval(() => this.refresh(), ms)
+      window.setInterval(() => { void this.refresh(); }, ms)
     );
   }
 
@@ -116,7 +116,7 @@ export default class GitLabInboxPlugin extends Plugin {
   async refresh(): Promise<void> {
     if (this.refreshing) return;
     if (!this.settings.gitlabHostname || !this.settings.personalAccessToken) {
-      new Notice("GitLab Inbox: Configure hostname and token in settings.");
+      new Notice("Configure hostname and token in settings.");
       return;
     }
     this.refreshing = true;
@@ -327,7 +327,7 @@ export default class GitLabInboxPlugin extends Plugin {
       await api.markTodoAsDone(item.todoId);
       await this.checkOffItem(item);
       new Notice(`GitLab todo marked as done: ${item.shortRef}`);
-    } catch (e) {
+    } catch {
       new Notice("Failed to mark GitLab todo as done");
     }
   }

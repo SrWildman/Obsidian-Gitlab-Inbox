@@ -1,15 +1,12 @@
-import { App, normalizePath, TFile, TFolder } from "obsidian";
-import { daysAgo } from "./inbox-processor";
+import { App, normalizePath, TFile } from "obsidian";
 import {
   Category,
   CheckedState,
-  DiffSize,
   GitLabInboxSettings,
   InboxData,
   InboxItem,
   MergeReadiness,
   SectionConfig,
-  TeamMemberLoad,
 } from "./types";
 
 const KEY_PATTERN = /<!--\s*(glab:\S+)\s*-->/;

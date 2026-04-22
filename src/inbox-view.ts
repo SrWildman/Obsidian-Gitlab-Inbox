@@ -1,4 +1,4 @@
-import { ItemView, Notice, WorkspaceLeaf } from "obsidian";
+import { ItemView, WorkspaceLeaf } from "obsidian";
 import type GitLabInboxPlugin from "./main";
 import {
   Category,
@@ -7,7 +7,6 @@ import {
   InboxItem,
   MergeReadiness,
   PriorityLabel,
-  SectionConfig,
   TeamMemberLoad,
 } from "./types";
 
@@ -37,12 +36,14 @@ export class InboxView extends ItemView {
     return "inbox";
   }
 
-  async onOpen(): Promise<void> {
+  onOpen(): Promise<void> {
     this.render();
+    return Promise.resolve();
   }
 
-  async onClose(): Promise<void> {
+  onClose(): Promise<void> {
     this.contentEl.empty();
+    return Promise.resolve();
   }
 
   setData(data: InboxData): void {
@@ -84,7 +85,7 @@ export class InboxView extends ItemView {
       text: this.refreshing ? "Refreshing..." : "Refresh",
     });
     refreshBtn.addEventListener("click", () => {
-      this.plugin.refresh();
+      void this.plugin.refresh();
     });
 
     if (!this.data) {
@@ -108,16 +109,16 @@ export class InboxView extends ItemView {
 
       const batchDone = batchBar.createEl("button", { cls: "gi-batch-btn", text: "\u2713 Done" });
       if (this.selectedKeys.size === 0) batchDone.setAttribute("disabled", "");
-      batchDone.addEventListener("click", async () => {
+      batchDone.addEventListener("click", () => {
         if (this.selectedKeys.size === 0) return;
-        await this.batchAction("done");
+        void this.batchAction("done");
       });
 
       const batchSnooze = batchBar.createEl("button", { cls: "gi-batch-btn gi-batch-snooze", text: "\u23F3 Snooze" });
       if (this.selectedKeys.size === 0) batchSnooze.setAttribute("disabled", "");
-      batchSnooze.addEventListener("click", async () => {
+      batchSnooze.addEventListener("click", () => {
         if (this.selectedKeys.size === 0) return;
-        await this.batchAction("snooze");
+        void this.batchAction("snooze");
       });
     }
 
@@ -166,7 +167,7 @@ export class InboxView extends ItemView {
 
     // Selection checkbox (only in select mode)
     if (this.selectMode) {
-      const checkbox = main.createEl("input", { cls: "gi-item-checkbox", attr: { type: "checkbox" } }) as HTMLInputElement;
+      const checkbox = main.createEl("input", { cls: "gi-item-checkbox", attr: { type: "checkbox" } });
       checkbox.checked = isSelected;
       checkbox.addEventListener("change", () => {
         if (checkbox.checked) {
@@ -265,20 +266,9 @@ export class InboxView extends ItemView {
       text: "\u2713",
       attr: { "aria-label": "Mark as done" },
     });
-    doneBtn.addEventListener("click", async (e) => {
+    doneBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (item.todoId) {
-        await this.plugin.markTodoDone(item);
-      } else {
-        await this.plugin.checkOffItem(item);
-      }
-      row.addClass("gi-item-done");
-      setTimeout(() => {
-        if (this.data) {
-          this.data.items = this.data.items.filter((i) => i.key !== item.key);
-          this.render();
-        }
-      }, 300);
+      void this.handleDone(item, row);
     });
 
     const snoozeBtn = actions.createEl("button", {
@@ -286,19 +276,38 @@ export class InboxView extends ItemView {
       text: "\u23F3",
       attr: { "aria-label": "Snooze until tomorrow" },
     });
-    snoozeBtn.addEventListener("click", async (e) => {
+    snoozeBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const tomorrow = window.moment().add(1, "day").format("YYYY-MM-DD");
-      await this.plugin.snoozeItem(item, tomorrow);
-      row.addClass("gi-item-done");
-      setTimeout(() => {
-        if (this.data) {
-          this.data.items = this.data.items.filter((i) => i.key !== item.key);
-          this.render();
-        }
-      }, 300);
+      void this.handleSnooze(item, row);
     });
 
+  }
+
+  private async handleDone(item: InboxItem, row: HTMLElement): Promise<void> {
+    if (item.todoId) {
+      await this.plugin.markTodoDone(item);
+    } else {
+      await this.plugin.checkOffItem(item);
+    }
+    row.addClass("gi-item-done");
+    setTimeout(() => {
+      if (this.data) {
+        this.data.items = this.data.items.filter((i) => i.key !== item.key);
+        this.render();
+      }
+    }, 300);
+  }
+
+  private async handleSnooze(item: InboxItem, row: HTMLElement): Promise<void> {
+    const tomorrow = window.moment().add(1, "day").format("YYYY-MM-DD");
+    await this.plugin.snoozeItem(item, tomorrow);
+    row.addClass("gi-item-done");
+    setTimeout(() => {
+      if (this.data) {
+        this.data.items = this.data.items.filter((i) => i.key !== item.key);
+        this.render();
+      }
+    }, 300);
   }
 
   private renderTeamLoad(parent: HTMLElement, teamLoad: TeamMemberLoad[]): void {

@@ -1,6 +1,6 @@
-import { App, PluginSettingTab, Setting } from "obsidian";
+import { App, ButtonComponent, PluginSettingTab, Setting } from "obsidian";
 import type GitLabInboxPlugin from "./main";
-import { CONDITION_LABELS, CONDITION_UNITS, ConditionType, PriorityRule } from "./types";
+import { CONDITION_LABELS, CONDITION_UNITS, ConditionType } from "./types";
 
 export class GitLabInboxSettingTab extends PluginSettingTab {
   plugin: GitLabInboxPlugin;
@@ -31,7 +31,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Personal access token")
-      .setDesc("Token with api scope. Create at GitLab > Settings > Access Tokens.")
+      .setDesc("Token with API scope. Create at GitLab > Settings > Access tokens.")
       .addText((text) => {
         text
           .setPlaceholder("glpat-...")
@@ -147,17 +147,8 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       .setName("Test connection")
       .setDesc("Verify your GitLab hostname and token work.")
       .addButton((button) => {
-        button.setButtonText("Test").onClick(async () => {
-          button.setButtonText("Testing...");
-          try {
-            const api = this.plugin.createApi();
-            const username = await api.getUsername();
-            button.setButtonText(`Connected as ${username}`);
-            setTimeout(() => button.setButtonText("Test"), 3000);
-          } catch {
-            button.setButtonText("Failed - check settings");
-            setTimeout(() => button.setButtonText("Test"), 3000);
-          }
+        button.setButtonText("Test").onClick(() => {
+          void this.testConnection(button);
         });
       });
 
@@ -165,11 +156,8 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       .setName("Refresh now")
       .setDesc("Manually trigger an inbox refresh.")
       .addButton((button) => {
-        button.setButtonText("Refresh").onClick(async () => {
-          button.setButtonText("Refreshing...");
-          await this.plugin.refresh();
-          button.setButtonText("Done");
-          setTimeout(() => button.setButtonText("Refresh"), 2000);
+        button.setButtonText("Refresh").onClick(() => {
+          void this.refreshNow(button);
         });
       });
   }
@@ -290,7 +278,6 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       const setting = new Setting(container);
 
       // Build description: "When [condition] [value] [unit], apply [label]"
-      const labelName = labels.find((l) => l.id === rule.labelId)?.label ?? "?";
       let desc = CONDITION_LABELS[rule.condition];
       if (needsValue && rule.value !== null) {
         desc += ` ${rule.value} ${unit}`;
@@ -389,5 +376,25 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
           this.renderRules(container);
         });
       });
+  }
+
+  private async testConnection(button: ButtonComponent): Promise<void> {
+    button.setButtonText("Testing...");
+    try {
+      const api = this.plugin.createApi();
+      const username = await api.getUsername();
+      button.setButtonText(`Connected as ${username}`);
+      setTimeout(() => button.setButtonText("Test"), 3000);
+    } catch {
+      button.setButtonText("Failed - check settings");
+      setTimeout(() => button.setButtonText("Test"), 3000);
+    }
+  }
+
+  private async refreshNow(button: ButtonComponent): Promise<void> {
+    button.setButtonText("Refreshing...");
+    await this.plugin.refresh();
+    button.setButtonText("Done");
+    setTimeout(() => button.setButtonText("Refresh"), 2000);
   }
 }
