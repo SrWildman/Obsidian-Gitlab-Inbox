@@ -1,0 +1,350 @@
+/* GitLab Inbox Plugin Styles */
+
+.gi-container {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+/* Header */
+.gi-header {
+  margin-bottom: 12px;
+}
+
+.gi-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gi-title-row h4 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.gi-header-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.gi-header-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.gi-header-btn:hover {
+  color: var(--text-normal);
+  background: var(--background-modifier-hover);
+}
+
+.gi-header-btn.gi-active {
+  color: var(--text-accent);
+}
+
+.gi-summary {
+  color: var(--text-muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.gi-empty {
+  color: var(--text-muted);
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* Sections */
+.gi-section {
+  margin-bottom: 16px;
+}
+
+.gi-section-header {
+  margin-bottom: 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.gi-section-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--text-normal);
+}
+
+/* Items */
+.gi-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gi-item {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border-left: 3px solid transparent;
+}
+
+.gi-item:hover {
+  background: var(--background-modifier-hover);
+}
+
+.gi-has-priority {
+  border-left-style: solid;
+}
+
+/* Item main row */
+.gi-item-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.gi-item-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gi-item-ref {
+  font-weight: 600;
+  color: var(--text-accent);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.gi-item-ref:hover {
+  text-decoration: underline;
+}
+
+.gi-item-title {
+  color: var(--text-normal);
+}
+
+/* Badges */
+.gi-item-badges {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.gi-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--background-modifier-border);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.gi-ready {
+  background: var(--color-green);
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+
+.gi-warning {
+  background: var(--color-orange);
+  color: var(--text-on-accent);
+}
+
+.gi-stale {
+  background: var(--color-yellow);
+  color: var(--background-primary);
+}
+
+.gi-threads {
+  background: var(--color-yellow);
+  color: var(--background-primary);
+}
+
+.gi-size-large {
+  background: var(--color-orange);
+  color: var(--text-on-accent);
+}
+
+.gi-priority-badge {
+  color: var(--text-on-accent);
+  font-weight: 600;
+}
+
+.gi-age {
+  background: none;
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+/* Meta row */
+.gi-item-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.gi-meta-flag {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.gi-meta-sep::before {
+  content: " \00b7 ";
+}
+
+/* Description preview */
+.gi-item-desc {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 2px;
+  padding-left: 4px;
+  border-left: 2px solid var(--background-modifier-border);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Team load table */
+.gi-team-section {
+  margin-top: 20px;
+}
+
+.gi-team-table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: collapse;
+}
+
+.gi-team-table th {
+  text-align: left;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--background-modifier-border);
+  color: var(--text-muted);
+}
+
+.gi-team-table td {
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--background-modifier-border-hover);
+}
+
+/* Selection checkbox */
+.gi-item-checkbox {
+  margin: 0 4px 0 0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.gi-item-selected {
+  background: var(--background-modifier-hover);
+}
+
+/* Batch action bar */
+.gi-batch-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  background: var(--background-modifier-border);
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.gi-batch-btn {
+  padding: 2px 10px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  background: var(--interactive-accent);
+  color: var(--text-on-accent);
+}
+
+.gi-batch-btn:hover {
+  opacity: 0.9;
+}
+
+.gi-batch-snooze {
+  background: var(--background-modifier-hover);
+  color: var(--text-muted);
+}
+
+.gi-batch-btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Action buttons */
+.gi-item-actions {
+  display: flex;
+  gap: 2px;
+  margin-top: 4px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.gi-item:hover .gi-item-actions {
+  opacity: 1;
+}
+
+.gi-action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 2px 4px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.gi-action-btn:hover {
+  color: var(--text-normal);
+  background: var(--background-modifier-hover);
+}
+
+.gi-action-todo:hover {
+  color: var(--color-green);
+}
+
+.gi-item-done {
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+
+/* Settings: Rules - wrap controls for narrow screens */
+.gi-rules-list .setting-item {
+  flex-wrap: wrap;
+}
+
+.gi-rules-list .setting-item-control {
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.gi-rules-list .setting-item-control select {
+  min-width: 0;
+}
+
+.gi-rules-list .setting-item-control input[type="number"] {
+  width: 50px !important;
+}
+
+/* Status bar */
+.gi-status-bar {
+  cursor: pointer;
+}
+
+.gi-status-bar:hover {
+  color: var(--text-accent);
+}
