@@ -18,7 +18,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("GitLab hostname")
-      .setDesc("Your self-hosted GitLab instance (e.g. gitlab.company.com)")
+      .setDesc("Your self-hosted GitLab instance (e.g. gitlab.company.com).")
       .addText((text) => {
         text
           .setPlaceholder("gitlab.example.com")
@@ -41,7 +41,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           });
         text.inputEl.type = "password";
-        text.inputEl.style.width = "300px";
+        text.inputEl.addClass("gi-input-token");
       });
 
     new Setting(containerEl).setName("Refresh").setHeading();
@@ -196,7 +196,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
               section.label = value;
               await this.plugin.saveSettings();
             });
-          text.inputEl.style.width = "150px";
+          text.inputEl.addClass("gi-input-section-label");
         });
 
       if (i > 0) {
@@ -238,7 +238,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
               label.label = value;
               await this.plugin.saveSettings();
             });
-          text.inputEl.style.width = "120px";
+          text.inputEl.addClass("gi-input-label-name");
           text.inputEl.addEventListener("blur", () => this.display());
         })
         .addText((text) => {
@@ -249,7 +249,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
               label.color = value;
               await this.plugin.saveSettings();
             });
-          text.inputEl.style.width = "150px";
+          text.inputEl.addClass("gi-input-label-color");
           text.inputEl.style.borderLeft = `4px solid ${label.color}`;
         })
         .addButton((btn) => {
@@ -323,7 +323,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
               rule.value = isNaN(num) ? null : num;
               await this.plugin.saveSettings();
             });
-          text.inputEl.style.width = "50px";
+          text.inputEl.addClass("gi-input-rule-value");
           text.inputEl.type = "number";
         });
       }

@@ -38,7 +38,7 @@ export default class GitLabInboxPlugin extends Plugin {
     this.statusBarEl = this.addStatusBarItem();
     this.statusBarEl.setText("");
     this.statusBarEl.addClass("gi-status-bar");
-    this.statusBarEl.addEventListener("click", () => {
+    this.registerDomEvent(this.statusBarEl, "click", () => {
       this.activateView();
     });
 
@@ -62,7 +62,8 @@ export default class GitLabInboxPlugin extends Plugin {
     if (this.settings.gitlabHostname && this.settings.personalAccessToken) {
       this.startInterval();
       // Initial fetch after a short delay to let Obsidian finish loading
-      setTimeout(() => this.refresh(), 5000);
+      const t = window.setTimeout(() => this.refresh(), 5000);
+      this.register(() => window.clearTimeout(t));
     }
 
     // Watch for changes to the inbox file (user checking items off)
@@ -94,7 +95,9 @@ export default class GitLabInboxPlugin extends Plugin {
   startInterval(): void {
     this.stopInterval();
     const ms = this.settings.refreshIntervalMinutes * 60 * 1000;
-    this.intervalId = window.setInterval(() => this.refresh(), ms);
+    this.intervalId = this.registerInterval(
+      window.setInterval(() => this.refresh(), ms)
+    );
   }
 
   stopInterval(): void {

@@ -348,3 +348,10 @@
 .gi-status-bar:hover {
   color: var(--text-accent);
 }
+
+/* Settings: input widths */
+.gi-input-token { width: 300px; }
+.gi-input-section-label { width: 150px; }
+.gi-input-label-name { width: 120px; }
+.gi-input-label-color { width: 150px; }
+.gi-input-rule-value { width: 50px; }

@@ -187,10 +187,7 @@ export class InboxView extends ItemView {
     });
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      const hostname = this.plugin.settings.gitlabHostname;
-      if (hostname && item.url.includes(hostname)) {
-        window.open(item.url, "_blank");
-      }
+      window.open(item.url, "_blank");
     });
 
     info.createSpan({ cls: "gi-item-title", text: ` ${item.title}` });

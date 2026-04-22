@@ -140,6 +140,10 @@ Every refresh, the plugin automatically marks stale GitLab todos as done (todos 
 
 The token is stored locally in `.obsidian/plugins/gitlab-inbox/data.json`. It never leaves your machine except to authenticate with your GitLab instance. If you sync your vault via git, add `data.json` to `.gitignore` in your `.obsidian/plugins/gitlab-inbox/` directory.
 
+## Network usage
+
+This plugin connects to your configured GitLab instance (self-hosted or gitlab.com) via authenticated HTTPS requests to the GitLab REST API. It fetches merge requests, todos, approvals, and discussions. Your personal access token is sent as a `PRIVATE-TOKEN` header and is stored locally in your vault's plugin data. No telemetry or analytics data is collected.
+
 ## Configuration
 
 ### Connection
