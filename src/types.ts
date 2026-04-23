@@ -1,11 +1,11 @@
 // Enums
 
 export enum Category {
-  NeedsReview = "Needs Your Review",
-  ReReview = "Re-Review",
+  NeedsReview = "Needs your review",
+  ReReview = "Re-review",
   Approved = "Approved",
   YourMRs = "Your MRs",
-  Todos = "Mentions & Todos",
+  Todos = "Mentions & todos",
 }
 
 export enum ConditionType {
@@ -81,11 +81,11 @@ export interface GitLabInboxSettings {
 }
 
 export const DEFAULT_SECTION_ORDER: SectionConfig[] = [
-  { category: Category.NeedsReview, label: "Needs Your Review", enabled: true },
-  { category: Category.ReReview, label: "Re-Review", enabled: true },
+  { category: Category.NeedsReview, label: "Needs your review", enabled: true },
+  { category: Category.ReReview, label: "Re-review", enabled: true },
   { category: Category.Approved, label: "Approved", enabled: true },
   { category: Category.YourMRs, label: "Your MRs", enabled: true },
-  { category: Category.Todos, label: "Mentions & Todos", enabled: true },
+  { category: Category.Todos, label: "Mentions & todos", enabled: true },
 ];
 
 export const DEFAULT_LABELS: PriorityLabel[] = [

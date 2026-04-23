@@ -1,4 +1,4 @@
-import { normalizePath, Notice, Plugin } from "obsidian";
+import { moment, normalizePath, Notice, Plugin } from "obsidian";
 import { GitLabApi } from "./gitlab-api";
 import { fetchInboxData } from "./inbox-processor";
 import { InboxView, VIEW_TYPE_INBOX } from "./inbox-view";
@@ -30,7 +30,7 @@ export default class GitLabInboxPlugin extends Plugin {
     this.registerView(VIEW_TYPE_INBOX, (leaf) => new InboxView(leaf, this));
 
     // Ribbon icon
-    this.addRibbonIcon("inbox", "GitLab Inbox", () => {
+    this.addRibbonIcon("inbox", "GitLab inbox", () => {
       void this.activateView();
     });
 
@@ -62,8 +62,8 @@ export default class GitLabInboxPlugin extends Plugin {
     if (this.settings.gitlabHostname && this.settings.personalAccessToken) {
       this.startInterval();
       // Initial fetch after a short delay to let Obsidian finish loading
-      const t = window.setTimeout(() => { void this.refresh(); }, 5000);
-      this.register(() => window.clearTimeout(t));
+      const t = activeWindow.setTimeout(() => { void this.refresh(); }, 5000);
+      this.register(() => activeWindow.clearTimeout(t));
     }
 
     // Watch for changes to the inbox file (user checking items off)
@@ -81,7 +81,7 @@ export default class GitLabInboxPlugin extends Plugin {
   }
 
   async loadSettings(): Promise<void> {
-    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData() as Partial<GitLabInboxSettings>);
   }
 
   async saveSettings(): Promise<void> {
@@ -96,13 +96,13 @@ export default class GitLabInboxPlugin extends Plugin {
     this.stopInterval();
     const ms = this.settings.refreshIntervalMinutes * 60 * 1000;
     this.intervalId = this.registerInterval(
-      window.setInterval(() => { void this.refresh(); }, ms)
+      activeWindow.setInterval(() => { void this.refresh(); }, ms)
     );
   }
 
   stopInterval(): void {
     if (this.intervalId !== null) {
-      window.clearInterval(this.intervalId);
+      activeWindow.clearInterval(this.intervalId);
       this.intervalId = null;
     }
   }
@@ -291,7 +291,7 @@ export default class GitLabInboxPlugin extends Plugin {
     const keyPattern = `<!-- ${item.key} -->`;
     const updated = content.replace(
       new RegExp(`^(\\s*- )\\[ \\](.+${keyPattern.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}.*)$`, "m"),
-      `$1[x]$2 done on ${window.moment().format("YYYY-MM-DD")}`
+      `$1[x]$2 done on ${moment().format("YYYY-MM-DD")}`
     );
 
     if (updated !== content) {
@@ -348,7 +348,7 @@ export default class GitLabInboxPlugin extends Plugin {
     }
 
     if (leaf) {
-      workspace.revealLeaf(leaf);
+      await workspace.revealLeaf(leaf);
       // If we have data, show it filtered by current note state
       const view = leaf.view as InboxView;
       if (this.lastData) {

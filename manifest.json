@@ -2,7 +2,7 @@
   "id": "gitlab-inbox",
   "name": "GitLab Inbox",
   "version": "1.0.0",
-  "minAppVersion": "1.7.0",
+  "minAppVersion": "1.7.2",
   "description": "Auto-refreshing GitLab inbox showing MRs to review, your open MRs, mentions, and todos with check-off support.",
   "author": "Sam Wildman",
   "authorUrl": "https://github.com/SrWildman",

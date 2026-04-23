@@ -18,7 +18,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("GitLab hostname")
-      .setDesc("Your self-hosted GitLab instance (e.g. gitlab.company.com).")
+      .setDesc("Your self-hosted GitLab instance (e.g. GitLab.company.com).")
       .addText((text) => {
         text
           .setPlaceholder("gitlab.example.com")
@@ -31,9 +31,10 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Personal access token")
-      .setDesc("Token with API scope. Create at GitLab > Settings > Access tokens.")
+      .setDesc("Token with API scope. Create at GitLab > settings > access tokens.")
       .addText((text) => {
         text
+          // eslint-disable-next-line obsidianmd/ui/sentence-case
           .setPlaceholder("glpat-...")
           .setValue(this.plugin.settings.personalAccessToken)
           .onChange(async (value) => {
@@ -65,10 +66,10 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
 
     new Setting(containerEl)
       .setName("Inbox filename")
-      .setDesc("Name of the markdown note written to your vault root.")
+      .setDesc("Name of the Markdown note written to your vault root.")
       .addText((text) => {
         text
-          .setPlaceholder("GitLab Inbox.md")
+          .setPlaceholder("GitLab inbox.md")
           .setValue(this.plugin.settings.inboxFilename)
           .onChange(async (value) => {
             this.plugin.settings.inboxFilename = value;
@@ -118,6 +119,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       .setDesc("Moment.js format for daily note filenames.")
       .addText((text) => {
         text
+          // eslint-disable-next-line obsidianmd/ui/sentence-case
           .setPlaceholder("YYYY-MM-DD")
           .setValue(this.plugin.settings.dailyNoteDateFormat)
           .onChange(async (value) => {
@@ -256,9 +258,9 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
 
     new Setting(container)
       .addButton((btn) => {
-        btn.setButtonText("+ Add Label").onClick(async () => {
+        btn.setButtonText("+ add label").onClick(async () => {
           const id = `label_${Date.now()}`;
-          labels.push({ id, label: "New Label", color: "var(--text-muted)" });
+          labels.push({ id, label: "New label", color: "var(--text-muted)" });
           await this.plugin.saveSettings();
           this.renderLabels(container);
         });
@@ -364,7 +366,7 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
     // Add rule button
     new Setting(container)
       .addButton((btn) => {
-        btn.setButtonText("+ Add Rule").onClick(async () => {
+        btn.setButtonText("+ add rule").onClick(async () => {
           const firstLabel = labels[0]?.id ?? "";
           if (!firstLabel) return;
           rules.push({
@@ -384,10 +386,10 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       const api = this.plugin.createApi();
       const username = await api.getUsername();
       button.setButtonText(`Connected as ${username}`);
-      setTimeout(() => button.setButtonText("Test"), 3000);
+      activeWindow.setTimeout(() => { button.setButtonText("Test"); }, 3000);
     } catch {
       button.setButtonText("Failed - check settings");
-      setTimeout(() => button.setButtonText("Test"), 3000);
+      activeWindow.setTimeout(() => { button.setButtonText("Test"); }, 3000);
     }
   }
 
@@ -395,6 +397,6 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
     button.setButtonText("Refreshing...");
     await this.plugin.refresh();
     button.setButtonText("Done");
-    setTimeout(() => button.setButtonText("Refresh"), 2000);
+    activeWindow.setTimeout(() => { button.setButtonText("Refresh"); }, 2000);
   }
 }

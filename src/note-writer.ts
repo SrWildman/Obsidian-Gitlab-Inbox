@@ -1,4 +1,4 @@
-import { App, normalizePath, TFile } from "obsidian";
+import { App, moment, normalizePath, TFile } from "obsidian";
 import {
   Category,
   CheckedState,
@@ -179,7 +179,7 @@ export function generateNote(
 
   // Team review load
   if (data.teamLoad.length > 0) {
-    lines.push("## Team Review Load");
+    lines.push("## Team review load");
     lines.push("");
     lines.push("| Reviewer | Open Reviews | Oldest |");
     lines.push("|----------|-------------|--------|");
@@ -244,7 +244,7 @@ export async function logToDailyNote(
 ): Promise<void> {
   if (!settings.enableDailyNoteLogging || checkedItems.length === 0) return;
 
-  const today = window.moment().format(settings.dailyNoteDateFormat);
+  const today = moment().format(settings.dailyNoteDateFormat);
   const dailyPath = normalizePath(`${settings.dailyNotesFolder}/${today}.md`);
   const dailyFile = app.vault.getFileByPath(dailyPath);
   if (!dailyFile || !(dailyFile instanceof TFile)) return;

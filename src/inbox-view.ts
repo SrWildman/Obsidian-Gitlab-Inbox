@@ -1,4 +1,4 @@
-import { ItemView, WorkspaceLeaf } from "obsidian";
+import { ItemView, moment, WorkspaceLeaf } from "obsidian";
 import type GitLabInboxPlugin from "./main";
 import {
   Category,
@@ -29,7 +29,7 @@ export class InboxView extends ItemView {
   }
 
   getDisplayText(): string {
-    return "GitLab Inbox";
+    return "GitLab inbox";
   }
 
   getIcon(): string {
@@ -64,7 +64,7 @@ export class InboxView extends ItemView {
     // Header
     const header = container.createDiv({ cls: "gi-header" });
     const titleRow = header.createDiv({ cls: "gi-title-row" });
-    titleRow.createEl("h4", { text: "GitLab Inbox" });
+    titleRow.createEl("h4", { text: "GitLab inbox" });
 
     const headerButtons = titleRow.createDiv({ cls: "gi-header-buttons" });
 
@@ -107,7 +107,7 @@ export class InboxView extends ItemView {
       const batchBar = container.createDiv({ cls: "gi-batch-bar" });
       batchBar.createSpan({ text: this.selectedKeys.size > 0 ? `${this.selectedKeys.size} selected` : "Select items" });
 
-      const batchDone = batchBar.createEl("button", { cls: "gi-batch-btn", text: "\u2713 Done" });
+      const batchDone = batchBar.createEl("button", { cls: "gi-batch-btn", text: "\u2713 done" });
       if (this.selectedKeys.size === 0) batchDone.setAttribute("disabled", "");
       batchDone.addEventListener("click", () => {
         if (this.selectedKeys.size === 0) return;
@@ -188,7 +188,7 @@ export class InboxView extends ItemView {
     });
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      window.open(item.url, "_blank");
+      activeWindow.open(item.url, "_blank");
     });
 
     info.createSpan({ cls: "gi-item-title", text: ` ${item.title}` });
@@ -290,7 +290,7 @@ export class InboxView extends ItemView {
       await this.plugin.checkOffItem(item);
     }
     row.addClass("gi-item-done");
-    setTimeout(() => {
+    activeWindow.setTimeout(() => {
       if (this.data) {
         this.data.items = this.data.items.filter((i) => i.key !== item.key);
         this.render();
@@ -299,10 +299,10 @@ export class InboxView extends ItemView {
   }
 
   private async handleSnooze(item: InboxItem, row: HTMLElement): Promise<void> {
-    const tomorrow = window.moment().add(1, "day").format("YYYY-MM-DD");
+    const tomorrow = moment().add(1, "day").format("YYYY-MM-DD");
     await this.plugin.snoozeItem(item, tomorrow);
     row.addClass("gi-item-done");
-    setTimeout(() => {
+    activeWindow.setTimeout(() => {
       if (this.data) {
         this.data.items = this.data.items.filter((i) => i.key !== item.key);
         this.render();
@@ -313,7 +313,7 @@ export class InboxView extends ItemView {
   private renderTeamLoad(parent: HTMLElement, teamLoad: TeamMemberLoad[]): void {
     const section = parent.createDiv({ cls: "gi-section gi-team-section" });
     section.createDiv({ cls: "gi-section-header" })
-      .createSpan({ cls: "gi-section-title", text: "Team Review Load" });
+      .createSpan({ cls: "gi-section-title", text: "Team review load" });
 
     const table = section.createEl("table", { cls: "gi-team-table" });
     const thead = table.createEl("thead");
@@ -336,7 +336,7 @@ export class InboxView extends ItemView {
     const selected = this.data.items.filter((i) => this.selectedKeys.has(i.key));
     if (selected.length === 0) return;
 
-    const tomorrow = window.moment().add(1, "day").format("YYYY-MM-DD");
+    const tomorrow = moment().add(1, "day").format("YYYY-MM-DD");
 
     for (const item of selected) {
       if (action === "done") {
