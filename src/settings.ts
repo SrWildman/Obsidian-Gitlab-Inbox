@@ -34,7 +34,6 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       .setDesc("Token with API scope. Create at GitLab > settings > access tokens.")
       .addText((text) => {
         text
-          // eslint-disable-next-line obsidianmd/ui/sentence-case
           .setPlaceholder("glpat-...")
           .setValue(this.plugin.settings.personalAccessToken)
           .onChange(async (value) => {
@@ -119,7 +118,6 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       .setDesc("Moment.js format for daily note filenames.")
       .addText((text) => {
         text
-          // eslint-disable-next-line obsidianmd/ui/sentence-case
           .setPlaceholder("YYYY-MM-DD")
           .setValue(this.plugin.settings.dailyNoteDateFormat)
           .onChange(async (value) => {
