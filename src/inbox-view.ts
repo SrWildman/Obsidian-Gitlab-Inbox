@@ -11,6 +11,7 @@ import {
 } from "./types";
 
 export const VIEW_TYPE_INBOX = "gitlab-inbox-view";
+const LABEL_SNOOZE = "⏳ snooze";
 
 export class InboxView extends ItemView {
   plugin: GitLabInboxPlugin;
@@ -114,7 +115,7 @@ export class InboxView extends ItemView {
         void this.batchAction("done");
       });
 
-      const batchSnooze = batchBar.createEl("button", { cls: "gi-batch-btn gi-batch-snooze", text: "\u23F3 Snooze" });
+      const batchSnooze = batchBar.createEl("button", { cls: "gi-batch-btn gi-batch-snooze", text: LABEL_SNOOZE });
       if (this.selectedKeys.size === 0) batchSnooze.setAttribute("disabled", "");
       batchSnooze.addEventListener("click", () => {
         if (this.selectedKeys.size === 0) return;

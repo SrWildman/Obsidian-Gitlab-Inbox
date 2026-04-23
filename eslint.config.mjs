@@ -10,10 +10,5 @@ export default defineConfig([
       parser: tsparser,
       parserOptions: { project: "./tsconfig.json" },
     },
-    rules: {
-      "obsidianmd/ui/sentence-case": ["error", {
-        ignoreRegex: ["^glpat-", "^[A-Z]{2,}-[A-Z]{2,}-[A-Z]{2,}$"],
-      }],
-    },
   },
 ]);

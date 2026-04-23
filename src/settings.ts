@@ -2,6 +2,10 @@ import { App, ButtonComponent, PluginSettingTab, Setting } from "obsidian";
 import type GitLabInboxPlugin from "./main";
 import { CONDITION_LABELS, CONDITION_UNITS, ConditionType } from "./types";
 
+const PLACEHOLDER_HOSTNAME = "gitlab.example.com";
+const PLACEHOLDER_TOKEN = "glpat-...";
+const PLACEHOLDER_DATE_FORMAT = "YYYY-MM-DD";
+
 export class GitLabInboxSettingTab extends PluginSettingTab {
   plugin: GitLabInboxPlugin;
 
@@ -21,12 +25,12 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       .setDesc("Your self-hosted GitLab instance (e.g. GitLab.company.com).")
       .addText((text) => {
         text
-          .setPlaceholder("gitlab.example.com")
           .setValue(this.plugin.settings.gitlabHostname)
           .onChange(async (value) => {
             this.plugin.settings.gitlabHostname = value;
             await this.plugin.saveSettings();
           });
+        text.inputEl.placeholder = PLACEHOLDER_HOSTNAME;
       });
 
     new Setting(containerEl)
@@ -34,13 +38,13 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       .setDesc("Token with API scope. Create at GitLab > settings > access tokens.")
       .addText((text) => {
         text
-          .setPlaceholder("glpat-...")
           .setValue(this.plugin.settings.personalAccessToken)
           .onChange(async (value) => {
             this.plugin.settings.personalAccessToken = value;
             await this.plugin.saveSettings();
           });
         text.inputEl.type = "password";
+        text.inputEl.placeholder = PLACEHOLDER_TOKEN;
         text.inputEl.addClass("gi-input-token");
       });
 
@@ -118,12 +122,12 @@ export class GitLabInboxSettingTab extends PluginSettingTab {
       .setDesc("Moment.js format for daily note filenames.")
       .addText((text) => {
         text
-          .setPlaceholder("YYYY-MM-DD")
           .setValue(this.plugin.settings.dailyNoteDateFormat)
           .onChange(async (value) => {
             this.plugin.settings.dailyNoteDateFormat = value;
             await this.plugin.saveSettings();
           });
+        text.inputEl.placeholder = PLACEHOLDER_DATE_FORMAT;
       });
 
     new Setting(containerEl).setName("Sections").setDesc("Rename, reorder, or disable inbox sections.").setHeading();
