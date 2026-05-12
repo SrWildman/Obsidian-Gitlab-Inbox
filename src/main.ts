@@ -278,8 +278,8 @@ export default class GitLabInboxPlugin extends Plugin {
 
   private getView(): InboxView | null {
     const leaves = this.app.workspace.getLeavesOfType(VIEW_TYPE_INBOX);
-    if (leaves.length > 0) {
-      return leaves[0].view as InboxView;
+    if (leaves.length > 0 && leaves[0].view instanceof InboxView) {
+      return leaves[0].view;
     }
     return null;
   }
